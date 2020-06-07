@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Spending</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+    //load visualization API corechart packages
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawAllSheets);
+
+        function drawAllSheets() {
+            drawSheetName('GDP', 'SELECT A,H', GDP2016ResponseHandler);
+            drawSheetName('Population', 'SELECT A,H', populationResponseHandler);
+            drawSheetName('GDP_capita', 'SELECT A,H', GDPCapitaResponseHandler);
+            drawSheetName('GDP_t', 'SELECT A,B,C,D,E,F,G,H,I,J,K', GDPResponseHandler);
+            drawSheetName('Expenditure', 'SELECT A,B,C,D,E', expenditureResponseHandler);
+        } //drawAllSheets
+
+        function drawSheetName(sheetName, query, responseHandler) {
+            var queryString = encodeURIComponent(query);
+            var query = new google.visualization.Query(
+                'https://docs.google.com/spreadsheets/d/1gCe-WUNDAoKP76fsC_xUwmZmyeEAijECPoAkw6Kn7bo/gviz/tq?sheet=' 
+                        + sheetName + '&headers=1&tq=' + queryString); //Query
+            query.send(responseHandler);
+        } //drawSheetName
+
+        function checkError(response) {
+            if (response.isError()) {
+                alert('error is query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+                return;
+            }
+        }//checkError
+
+        function GDP2016ResponseHandler(response) {
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 1, desc:true});
+
+            var options = {
+                colorAxis : {colors: ['yellow', '#4374e0']}, //yellow to blue
+                legend: {numberFormat:''} 
+        
+            };
+
+            var chart = new google.visualization.GeoChart(document.getElementById('GDP'));
+
+            chart.draw(data, options);
+        } //GDP2016ResponseHandler
+
+        function populationResponseHandler(response) {
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 1, desc:true});
+
+            var options = {
+              colorAxis : {colors: ['yellow', '#4374e0']}, //yellow to blue
+                legend: {numberFormat:''} 
+            };
+
+            var chart = new google.visualization.GeoChart(document.getElementById('population'));
+
+            chart.draw(data, options);
+        } //populationResponseHandler
+        function GDPCapitaResponseHandler(response) {
+            checkError(response);
+            var data = response.getDataTable();
+            data.sort({column: 1, desc:true});
+
+            var options = {
+              colorAxis : {colors: ['yellow', '#4374e0']}, //yellow to blue
+                legend: {numberFormat:'.#'} 
+            };
+
+            var chart = new google.visualization.GeoChart(document.getElementById('GDP_capita'));
+
+            chart.draw(data, options);
+        } //GDPCapitaResponseHandler
+
+        function GDPResponseHandler(response) {
+          var data = response.getDataTable();
+            var options = {
+              chart: {
+                title: 'GDP for 2010 - 2016',
+                },
+                vAxis: {format: 'Billion:'},
+                legend: {position: 'top', maxLines: 3},
+                width: 900,
+                height: 500
+                };
+            var chart = new google.visualization.LineChart(document.getElementById('GDP_per_year_div'));
+            chart.draw(data, options);
+            }
+
+            function expenditureResponseHandler(response) {
+            var data = response.getDataTable();
+            data.sort({column: 4, desc: true});
+            
+            var options = {
+                width: 600,
+                height: 400,
+                legend: {position: 'top', maxLines: 3},
+                bar: {groupWidth: '75%'},
+                isStacked: true
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('expenditure_GDP_div'));
+
+            chart.draw(data, options);
+
+        } //expenditureResponseHandler
+  </script>
+</head>
+<body>
+  <div class="page-header">
+		<header class="group">
+      <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <div id="logo">  
+            <div id="logo_text">
+              <h2>Analysis of Education, Healthcare, and Military Spending of Countries in G20</h2>
+            </div><!-- logo_text -->
+          <div class="menubar">
+            <ul id="menu" class="flex-container right primary-menu">
+              <li id="menu-item-1" class="selected-menu-item"><a href="G20spending.html">Home</a></li>
+              <li id="menu-item-2" class="menu-item"><a href="education.html">Education</a></li>
+              <li id="menu-item-3" class="menu-item"><a href="healthcare.html">Healthcare</a></li>
+              <li id="menu-item-4" class="menu-item"><a href="military.html">Military</a></li>
+            </ul>
+          </div><!--menubar--> 
+          </div><!--logo-->
+        </div>
+        </div>
+      </div>
+      <script>
+        //Select the first map by default on page load  
+      $(document).ready(function() {  
+        $("#GDP").show();
+        $("#GDP_capita").hide();
+        $("#population").hide()
+        });
+      </script>  
+      </header>
+  </div>
+
+  <div class="container">
+    <p>The <a href="https://g20.org/en/about/Pages/default.aspx">G20</a> is the forum of the largest countries in the world. 
+    It gathers the ​leaders of the largest economies of the world to discuss financial and socioeconomic issues.
+    Here is the overview of GDP and population of 10 countries in G20: Australia, Brazil, China, Germany, 
+    Italy, Japan, Mexico, Spain, United Kindom, and United State from 2010 to 2016.
+    </p>
+    <p>
+    More analysis on <a href="education.html">education</a>, <a href="healthcare.html">healthcare</a>, and <a href="military.html">military</a> spending can be found. 
+    </p>
+  </div>
+  <div class="container">
+  <div class="row">
+    <div class = "col-md-2">
+      <form>
+        <div class="form-group">
+          <label for="sel1">Overview for countries in 2016:</label>
+          <select class="form-control" id="Dropdown">
+            
+            <option value="GDP_chart" id="GDP_chart">GDP (Billion $)</option>            
+            <option value="population_chart" id="population_chart">Population (Milion)</option>
+            <option value="GDP_capita_chart" id="GDP_capita_chart">GDP per capita ($)</option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-10">
+      <div id="GDP"></div>
+      <div id="GDP_capita"></div>
+      <div id="population"></div>     
+    </div> 
+  </div>
+  <p></p>
+  <h4>Total GDP by country 2016:</h4>
+  <p>The United States has retained its position of being the world's largest economy in terms of GDP, 
+    followed by China, Japan, Germany, the United Kingdom, Brazil, Italy, Spain, and Mexico.</p>
+    
+    <h4>
+      Total populations by country 2016: 
+    </h4>
+      <p>Not surprisingly, the largest countries in the world in terms of population is China, followed by 
+        the United States with just under 325 million residents. Brazil, as well as China, generally 
+        regarded as the major emerging economies expected to dominate in the 21st century, are both in the 
+        top most populous countries, indicating how important the sheer size of their populations are to 
+        their economic expansion.
+        </p>
+        <p>
+      It is notable that a number of the largest economies in the world have smaller populations, 
+      particularly Austrilia, and in Europe. The United Kingdom, Germany, and Italy are all among the top 
+      ten largest economies and all have populations of under 100 million. Their numbers range from 
+      82 million (Germany) to just under 60 million (Italy).
+    </p>
+    <h4>GDP per capita:</h4>
+    <p>Though China is the second largest economy in terms of GDP, it is also the most populous country, so 
+      it has the less GDP per capita, compared to the United States, Australia, Germany, the United Kingdom, 
+      Japan, Italy, Spain, Mexico, and Brazil.
+      </p>
+    <h3>GDP for 2010 - 2016</h3>
+    <div id="GDP_per_year_div" style="width: 900px; height:500px;"></div>
+    <p>
+      There's a clear trend of GDP growth for the United States and China. However, for other countries, 
+      GDP growth varies year by year, and all experienced a slightly or significantly negative GDP growth 
+      in 2015.
+    </p>
+    
+    <h3>Compare expenditure on education, healthcare, and military to GDP</h3>
+    <div id="expenditure_GDP_div" style="width: 900px; height:396px;"></div>
+    <p>
+      For all the countries, overall military spending is a smaller part, compared to education and 
+      healthcare spending. Also, except for China, Brazil, and Mexico, other countries have more 
+      expenditure on healthcare than on educaiton, which indicating that China, Brazil, and Mexico attach 
+      more attention to education.
+    </p>
+  </div>
+
+
+  
+  <div class="container">
+    
+      <div id="datasources">
+        Data Source: <a href="https://databank.worldbank.org/source/world-development-indicators/preview/on">World Bank|DataBank|World Development Indicators</a>.
+      </div>
+  </div>
+</body>
+<footer>
+  <script>
+  //Display the selected map
+    $(document).ready(function(){
+        $('#Dropdown').on('change', function() {
+          if ( this.value == 'GDP_chart')
+          {
+            $("#GDP").fadeIn(1000);
+          }
+          else
+          {
+            $("#GDP").hide();
+          }
+        });
+    });
+    $(document).ready(function(){
+        $('#Dropdown').on('change', function() {
+          if ( this.value == 'GDP_capita_chart')
+          {
+            $("#GDP_capita").fadeIn(1000);
+          }
+          else
+          {
+            $("#GDP_capita").hide();
+          }
+        });
+    });
+    $(document).ready(function(){
+        $('#Dropdown').on('change', function() {
+          if ( this.value == 'population_chart')
+          {
+            $("#population").fadeIn(1000);
+          }
+          else
+          {
+            $("#population").hide();
+          }
+        });
+    });
+    </script>
+</footer>
+</html>

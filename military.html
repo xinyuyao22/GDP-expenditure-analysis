@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Spending</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+    //load visualization API corechart packages
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawAllSheets);
+
+        function drawAllSheets() {
+            drawSheetName('Military', 'SELECT A,B,C,D,E,F,G,H,I,J,K', militaryResponseHandler);
+            drawSheetName('Military_capita', 'SELECT A,B,C,D,E,F,G,H,I,J,K', militaryCapitaResponseHandler);
+            drawSheetName('Military_GDP', 'SELECT A,B,C,D,E,F,G,H,I,J,K', militaryGDPResponseHandler)
+        } //drawAllSheets
+
+        function drawSheetName(sheetName, query, responseHandler) {
+            var queryString = encodeURIComponent(query);
+            var query = new google.visualization.Query(
+                'https://docs.google.com/spreadsheets/d/1gCe-WUNDAoKP76fsC_xUwmZmyeEAijECPoAkw6Kn7bo/gviz/tq?sheet=' 
+                        + sheetName + '&headers=1&tq=' + queryString); //Query
+            query.send(responseHandler);
+        } //drawSheetName
+
+        function checkError(response) {
+            if (response.isError()) {
+                alert('error is query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+                return;
+            }
+        }//checkError
+
+        
+        function militaryResponseHandler(response) {
+          var data = response.getDataTable();
+            var options = {
+              chart: {
+                title: 'Military spending for 2010 - 2016',
+                },
+                vAxis: {format: 'Billion: $'},
+                legend: {position: 'top', maxLines: 3},
+                width: 900,
+                height: 500
+                };
+            var chart = new google.visualization.LineChart(document.getElementById('military_div'));
+            chart.draw(data, options);
+            }
+
+        function militaryCapitaResponseHandler(response) {
+          var data = response.getDataTable();
+            var options = {
+              chart: {
+                title: 'Military spending per capita for 2010 - 2016',
+                },
+                vAxis: {format: '$'},
+                legend: {position: 'top', maxLines: 3},
+                width: 900,
+                height: 500
+                };
+            var chart = new google.visualization.LineChart(document.getElementById('military_capita_div'));
+            chart.draw(data, options);
+            }
+
+        function militaryGDPResponseHandler(response) {
+          var data = response.getDataTable();
+            var options = {
+              chart: {
+                title: 'Military spending (% GDP) for 2010 - 2016',
+                },
+                legend: {position: 'top', maxLines: 3},
+                width: 900,
+                height: 500
+                };
+            var chart = new google.visualization.LineChart(document.getElementById('military_GDP_div'));
+            chart.draw(data, options);
+            }
+
+            
+  </script>
+</head>
+<body>
+
+  <div class="page-header">
+		<header class="group">
+      <div class="container">
+      <div class="row">
+        <div class="col-sm-6">  
+          <div id="logo">  
+            <div id="logo_text">
+              <h2>Analysis of Education, Healthcare, and Military Spending of Countries in G20</h2>
+            </div><!-- logo_text -->
+          
+          <div class="menubar">
+            <ul id="menu" class="flex-container right primary-menu">
+              <li id="menu-item-1" class="menu-item"><a href="G20spending.html">Home</a></li>
+              <li id="menu-item-2" class="menu-item"><a href="education.html">Education</a></li>
+              <li id="menu-item-3" class="menu-item"><a href="healthcare.html">Healthcare</a></li>
+              <li id="menu-item-4" class="selected-menu-item"><a href="military.html">Military</a></li>
+            </ul>
+          </div><!--menubar--> 
+        </div>
+        </div>
+      </div>
+      </header>
+  </div>
+  <div class="container">
+            
+
+  <h3>Military spending for 2010 - 2016</h3>
+  <div id="military_div" style="width: 900px; height:500px;"></div>
+  <p>
+    The United States has the most military spending (around 649 billion USD), followed by China (around 175 billion USD), and the other 8 countries all have military spending less than 60 billion USD.
+  </p>
+
+  <h3>Per person military spending for 2010 - 2016</h3>
+  <div id="military_capita_div" style="width: 900px; height:500px;"></div>
+  <p>
+    Silimar to total military spending, the United States has the most per person military spending (around $2050), followed by Australia (around $1100), the United Kingdom (around $880), Germany (around $553), Italy (around $477), Japan (around $403), Spain (around $374), Brazil (around $156), China (around $128), and Mexico (around $60).
+  </p>
+
+  <h3>Military (% GDP) spending for 2010 - 2016</h3>
+  <div id="military_GDP_div" style="width: 900px; height:500px;"></div>
+  <p>
+    Similar to total military and per person spending, the United States has the most military spending in the percentage of GDP (4.66% in 2010 and 3.21% in 2016). 
+  </p>
+  <p>
+    The countries that have the least military spending (%GDP) are Japan (0.96%) and Mexico (0.60%).
+  </p>
+  
+  <div class="container">
+      <div id="datasources">
+        Data Source: <a href="https://databank.worldbank.org/source/world-development-indicators/preview/on">World Bank|DataBank|World Development Indicators</a>.
+      </div>
+  </div>
+</body>
+<footer>
+  <script>
+  //Display the selected map
+    $(document).ready(function(){
+        $('#Dropdown').on('change', function() {
+          if ( this.value == 'GDP_chart')
+          {
+            $("#GDP").fadeIn(1000);
+          }
+          else
+          {
+            $("#GDP").hide();
+          }
+        });
+    });
+    $(document).ready(function(){
+        $('#Dropdown').on('change', function() {
+          if ( this.value == 'GDP_capita_chart')
+          {
+            $("#GDP_capita").fadeIn(1000);
+          }
+          else
+          {
+            $("#GDP_capita").hide();
+          }
+        });
+    });
+    $(document).ready(function(){
+        $('#Dropdown').on('change', function() {
+          if ( this.value == 'population_chart')
+          {
+            $("#population").fadeIn(1000);
+          }
+          else
+          {
+            $("#population").hide();
+          }
+        });
+    });
+    </script>
+</footer>
+</html>

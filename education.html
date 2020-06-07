@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Spending</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+    //load visualization API corechart packages
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawAllSheets);
+
+        function drawAllSheets() {
+            drawSheetName('Education', 'SELECT A,B,C,D,E,F,G,H,I,J,K', educationResponseHandler);
+            drawSheetName('Education_capita', 'SELECT A,B,C,D,E,F,G,H,I,J,K', educationCapitaResponseHandler);
+            drawSheetName('Education_GDP', 'SELECT A,B,C,D,E,F,G,H,I,J,K', educationGDPResponseHandler)
+        } //drawAllSheets
+
+        function drawSheetName(sheetName, query, responseHandler) {
+            var queryString = encodeURIComponent(query);
+            var query = new google.visualization.Query(
+                'https://docs.google.com/spreadsheets/d/1gCe-WUNDAoKP76fsC_xUwmZmyeEAijECPoAkw6Kn7bo/gviz/tq?sheet=' 
+                        + sheetName + '&headers=1&tq=' + queryString); //Query
+            query.send(responseHandler);
+        } //drawSheetName
+
+        function checkError(response) {
+            if (response.isError()) {
+                alert('error is query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+                return;
+            }
+        }//checkError
+
+        
+        function educationResponseHandler(response) {
+          var data = response.getDataTable();
+            var options = {
+              chart: {
+                title: 'Education spending for 2010 - 2016',
+                },
+                vAxis: {format: 'Billion: $'},
+                legend: {position: 'top', maxLines: 3},
+                width: 900,
+                height: 500
+                };
+            var chart = new google.visualization.LineChart(document.getElementById('education_div'));
+            chart.draw(data, options);
+            }
+
+        function educationCapitaResponseHandler(response) {
+          var data = response.getDataTable();
+            var options = {
+              chart: {
+                title: 'Education spending per capita for 2010 - 2016',
+                },
+                vAxis: {format: '$'},
+                legend: {position: 'top', maxLines: 3},
+                width: 900,
+                height: 500
+                };
+            var chart = new google.visualization.LineChart(document.getElementById('education_capita_div'));
+            chart.draw(data, options);
+            }
+
+        function educationGDPResponseHandler(response) {
+          var data = response.getDataTable();
+            var options = {
+              chart: {
+                title: 'Education spending (% GDP) for 2010 - 2016',
+                },
+                legend: {position: 'top', maxLines: 3},
+                width: 900,
+                height: 500
+                };
+            var chart = new google.visualization.LineChart(document.getElementById('education_GDP_div'));
+            chart.draw(data, options);
+            }
+
+            
+  </script>
+</head>
+<body>
+
+  <div class="page-header">
+		<header class="group">
+      <div class="container">
+      <div class="row">
+        <div class="col-sm-6">  
+          <div id="logo">  
+            <div id="logo_text">
+              <h2>Analysis of Education, Healthcare, and Military Spending of Countries in G20</h2>
+            </div><!-- logo_text -->
+          <div class="menubar">
+            <ul id="menu" class="flex-container right primary-menu">
+              <li id="menu-item-1" class="menu-item"><a href="G20spending.html">Home</a></li>
+              <li id="menu-item-2" class="selected-menu-item"><a href="education.html">Education</a></li>
+              <li id="menu-item-3" class="menu-item"><a href="healthcare.html">Healthcare</a></li>
+              <li id="menu-item-4" class="menu-item"><a href="military.html">Military</a></li>
+            </ul>
+          </div><!--menubar--> 
+        </div>
+        </div>
+      </div>
+      </header>
+  </div>
+
+  <div class="container">
+
+  <h3>Education spending for 2010 - 2016</h3>
+  <div id="education_div" style="width: 900px; height:500px;"></div>
+  <p>
+    The United States spend more on education (around 1000 billion USD), compared to the rest 9 countries, followed by China (around 400 billion USD).
+  </p>
+  <p>
+    There is a significant increase on educaiton expenditure of China from 2010 to 2016.
+  </p>
+
+  <h3>Per person education spending for 2010 - 2016</h3>
+  <div id="education_capita_div" style="width: 900px; height:500px;"></div>
+  <p>
+    The United States and Austrialia has more per person education spending for 2010-2016, followed by the United Kingdom and Germany. China is the only one that keep the per person education spending growing from 2010 to 2016 among the 10 countries.
+  </p>
+  <p>
+    China is the only one that keep the per person education spending growing from 2010 to 2016 among the 10 countries.
+  </p>
+  <h3>Education (% GDP) spending for 2010 - 2016</h3>
+  <div id="education_GDP_div" style="width: 900px; height:500px;"></div>
+  <p>
+    There is not much difference interms of educational spending in percentage of GDP, except for Japan, which has the least education (%GDP) and decrease from 2010 to 2016. 
+  </p>
+  <p>
+    China has the fastest growth in educational spending in percentage of GDP, followed by Brazil.
+  </p>
+  <div class="container">
+      <div id="datasources">
+        Data Source: <a href="https://databank.worldbank.org/source/world-development-indicators/preview/on">World Bank|DataBank|World Development Indicators</a>.
+      </div>
+  </div>
+</body>
+<footer>
+  <script>
+  //Display the selected map
+    $(document).ready(function(){
+        $('#Dropdown').on('change', function() {
+          if ( this.value == 'GDP_chart')
+          {
+            $("#GDP").fadeIn(1000);
+          }
+          else
+          {
+            $("#GDP").hide();
+          }
+        });
+    });
+    $(document).ready(function(){
+        $('#Dropdown').on('change', function() {
+          if ( this.value == 'GDP_capita_chart')
+          {
+            $("#GDP_capita").fadeIn(1000);
+          }
+          else
+          {
+            $("#GDP_capita").hide();
+          }
+        });
+    });
+    $(document).ready(function(){
+        $('#Dropdown').on('change', function() {
+          if ( this.value == 'population_chart')
+          {
+            $("#population").fadeIn(1000);
+          }
+          else
+          {
+            $("#population").hide();
+          }
+        });
+    });
+    </script>
+</footer>
+</html>

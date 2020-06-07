@@ -1,0 +1,156 @@
+.selected-menu-item {
+    font-weight: bold;
+}
+
+#logo {
+	width: 1136px;
+	height: 284px;
+    background-image: url("Global_Economy_Opener.jpg");
+    background-color: #cccccc;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+#logo_text {
+    letter-spacing: 0em;
+    font: normal 105% arial, sans-serif;
+    float: left;
+    height: 20px;
+    text-decoration: none;
+    padding: 10px 22px 5px 62px;
+    text-align: center;
+    color: #fff;
+    border: 0;
+}
+
+#menubar {
+    width: 1136px;
+    height: 35px;
+    padding: 8px 0 0 0;
+    margin: -45px 0 0 0;
+    position: relative;
+    z-index: 1;
+    float: left;
+}
+
+ul#menu { /* same as writing #menu */
+    float: left;
+    margin: 0;
+}
+
+ul#menu li {
+    float: left;
+    display: block;
+    margin: 5px 0 0 0;
+    padding: 215px 0 0 6px;
+    list-style: none;
+}
+
+ul#menu li a {
+    letter-spacing: 0em;
+    font: normal 105% arial, sans-serif;
+    text-transform: uppercase;
+    display: block;
+    float: left;
+    height: 20px;
+    text-decoration: none;
+    padding: 9px 22px 5px 16px;
+    text-align: center;
+    color: #fff;
+    border: 0;
+}
+
+ul#menu li.selected a {
+    height: 25px;
+    color: #111;
+    padding: 7px 22px 5px 16px;
+}
+
+ul#menu li.selected {
+    margin: 7px 0 0 0;
+    background: #f8f8f8;
+}
+
+ul#menu li a:hover {
+    color: rgb(200, 150, 200);
+}
+
+
+h1, h2 {
+    text-align: center;
+}
+
+
+#datasources {
+    padding-top: 40px;
+    font-size: 9pt;
+}
+
+.col-md-10 div{
+    margin: 0 auto;
+}
+
+#GDP {
+    height: 347px;
+    width: 500px;
+}
+
+#pagelogos {
+    margin: auto;
+    display: inline-block;
+    text-align: center;
+}
+
+#pagecenter {
+    float: center;
+}
+
+#pagelogos h4 {
+    text-align: center;
+}
+
+#pagelogos img{
+    width: 95%;
+    margin: auto;
+    align-content: center;
+}
+
+#pagelogos img {
+    -webkit-filter: saturate(100%);
+            filter: saturate(100%);}
+  
+#pagelogos img:hover {
+      -webkit-filter: saturate(90%);
+              filter: saturate(90%);
+            margin-top: -5px;}
+
+#piecharts div {
+    margin-top: -30px;
+}
+
+#Military_Details div div {
+    text-align: center;
+    align-content: center;
+    margin: auto;
+}
+
+#Healthcare_Details div div {
+    text-align: center;
+    align-content: center;
+    margin: auto;
+}
+
+#Education_Details div div {
+    text-align: center;
+    align-content: center;
+    margin: auto;
+}
+
+div.flags div {
+    margin: 50px 0 20px 0;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+  }
+
